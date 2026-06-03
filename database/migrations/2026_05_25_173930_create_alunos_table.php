@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('alunos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->integer('turma')->nullable();
-            $table->unsignedBigInteger('curso_id')->nullable();
+            $table->integer('turma');
+            $table->unsignedBigInteger('curso_id');
             $table->foreign('curso_id')->references('id')->on('cursos');
             $table->softDeletes();
             $table->timestamps();

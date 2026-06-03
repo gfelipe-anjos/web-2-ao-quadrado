@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Matricula;
+use App\Models\Aluno;
+use App\Models\Disciplina;
+use App\Http\Requests\MatriculaRequest;
 
 class MatriculaController extends Controller
 {
@@ -21,15 +24,19 @@ class MatriculaController extends Controller
      */
     public function create()
     {
-        //
+        $alunos = Aluno::orderBy('nome')->get();
+        $disciplinas = Disciplina::orderBy('nome')->get();
+
+        return view('matricula.create', compact('alunos','disciplinas'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MatriculaRequest $request)
     {
-        //
+        Matricula::create($request->validated());
+        return redirect()->route('matricula.index');
     }
 
     /**
@@ -37,7 +44,9 @@ class MatriculaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $matricula = Matricula::with(['aluno.curso','disciplina' ])->findOrFail($id);
+
+        return view('matricula.show',compact('matricula'));
     }
 
     /**
@@ -45,15 +54,22 @@ class MatriculaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $alunos = Aluno::orderBy('nome')->get();
+        $disciplinas = Disciplina::orderBy('nome')->get();
+
+        $matricula = Matricula::findOrFail($id);
+
+        return view('matricula.edit', compact('matricula','alunos','disciplinas' ));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(MatriculaRequest $request, Matricula $matricula)
     {
-        //
+        $matricula->update($request->validated());
+
+        return redirect()->route('matricula.index');
     }
 
     /**
@@ -61,6 +77,13 @@ class MatriculaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+       $matricula = Matricula::find($id);
+
+        if(isset($matricula)) {
+            $matricula->delete();
+            return redirect()->route('matricula.index');
+        }
+
+        return "<h1>matricula$matricula não encontrada!</h1>";
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Aluno;
+use App\Models\Curso;
 use App\Http\Requests\AlunoRequest;
 
 class AlunoController extends Controller
@@ -21,7 +22,8 @@ class AlunoController extends Controller
      */
     public function create()
     {
-        return view('aluno.create');
+        $cursos = Curso::orderBy('nome')->get();
+        return view('aluno.create', compact('cursos'));
     }
 
     /**
@@ -54,9 +56,10 @@ class AlunoController extends Controller
     public function edit(string $id)
     {
         $aluno = Aluno::find($id);
-
+        $cursos = Curso::orderBy('nome')->get();
+    
         if(isset($aluno)) {
-            return view('aluno.edit', compact(['aluno']));
+            return view('aluno.edit', compact('aluno', 'cursos'));
         }
 
         return "<h1>Aluno não encontrado!</h1>";

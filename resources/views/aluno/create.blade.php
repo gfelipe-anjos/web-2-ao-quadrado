@@ -48,6 +48,37 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+        <div class="col">
+            <div class="form-floating mb-3">
+
+                <select
+                    name="curso_id"
+                    class="form-select @error('curso_id') is-invalid @enderror">
+
+                    <option value="">Selecione um curso</option>
+
+                    @foreach($cursos as $curso)
+                        <option
+                            value="{{ $curso->id }}"
+                            {{ old('curso_id') == $curso->id ? 'selected' : '' }}>
+                            {{ $curso->nome }}
+                        </option>
+                    @endforeach
+
+                </select>
+
+                <label for="curso_id">Curso</label>
+
+                @error('curso_id')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+            </div>
+        </div>
+    </div>
 
 
         <div class="row mb-5">

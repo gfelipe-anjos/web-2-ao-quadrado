@@ -45,7 +45,8 @@ class AlunoRequest extends FormRequest
 
         return [
             'nome' => "required|max:100|min:8|unique:alunos,nome,{$id}",
-            'turma' => "required|integer|min:1",    
+            'turma' => "required|integer|min:1",  
+            'curso_id' => "required|exists:cursos,id",  
         ];
     }
 }

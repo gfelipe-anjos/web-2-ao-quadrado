@@ -9,8 +9,8 @@
 
     <table class="table align-middle caption-top table-striped">
         <thead>
-            <th class="text-secondary">NOME</th>
-            <th class="d-none d-md-table-cell text-secondary">DURAÇÃO</th>
+            <th class="text-secondary">ALUNOS</th>
+            <th class="d-none d-md-table-cell text-secondary">DICIPLINAS</th>
             <th class="text-secondary">AÇÕES</th>
         </thead>
         <tbody>
