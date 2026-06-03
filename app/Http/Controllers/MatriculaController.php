@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Matricula;
 
 class MatriculaController extends Controller
 {
@@ -11,7 +12,8 @@ class MatriculaController extends Controller
      */
     public function index()
     {
-        //
+        $data = Matricula::with(['aluno', 'disciplina'])->orderBy('nome')->get();
+        return view('matricula.index', compact('data'));
     }
 
     /**

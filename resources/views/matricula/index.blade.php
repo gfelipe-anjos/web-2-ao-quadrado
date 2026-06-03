@@ -1,8 +1,8 @@
 @extends('template/main',
     [
         'titulo'=>"Sistema Aula",
-        'cabecalho' => 'Lista de Cursos',
-        'rota' => 'curso.create',
+        'cabecalho' => 'Lista de Matrículas',
+        'rota' => 'matricula.create',
     ]
 )
 @section('conteudo')
@@ -16,21 +16,21 @@
         <tbody>
             @foreach ($data as $item)
                 <tr>
-                    <td>{{ $item->nome }}</td>
-                    <td class="d-none d-md-table-cell">{{ $item->duracao }} ano(s)</td>
+                    <td>{{ $item->aluno->nome }}</td>
+                    <td class="d-none d-md-table-cell">{{ $item->disciplina->nome }} ano(s)</td>
                     <td>
-                        <a href="{{route('curso.show', $item->id)}}" class="btn btn-outline-info">
+                        <a href="{{route('matricula.show', $item->id)}}" class="btn btn-outline-info">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0d6efd" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
                             </svg>
                         </a>
-                        <a href="{{route('curso.edit', $item->id)}}" class="btn btn-outline-success">
+                        <a href="{{route('matricula.edit', $item->id)}}" class="btn btn-outline-success">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#5cb85c" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
                                 <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
                             </svg>
                         </a>
-                        <form action="{{route('curso.destroy', $item->id)}}" method="POST" id="form_{{$item->id}}">
+                        <form action="{{route('matricula.destroy', $item->id)}}" method="POST" id="form_{{$item->id}}">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-outline-danger">
