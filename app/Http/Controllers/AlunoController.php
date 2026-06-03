@@ -57,6 +57,7 @@ class AlunoController extends Controller
     {
         $aluno = Aluno::find($id);
         $cursos = Curso::orderBy('nome')->get();
+
     
         if(isset($aluno)) {
             return view('aluno.edit', compact('aluno', 'cursos'));
