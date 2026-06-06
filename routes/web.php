@@ -1,17 +1,21 @@
 <?php
 
-use App\Http\Controllers\AlunoController;
-use App\Http\Controllers\CursoController;
-use App\Http\Controllers\DisciplinaController;
-use App\Http\Controllers\MatriculaController;
-
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home');
-})->name('home');
+    return view('welcome');
+});
 
-Route::resource('/curso', CursoController::class);
-Route::resource('/disciplina', DisciplinaController::class);
-Route::resource('/aluno', AlunoController::class);
-Route::resource('/matricula', MatriculaController::class);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
+require __DIR__.'/app.php';

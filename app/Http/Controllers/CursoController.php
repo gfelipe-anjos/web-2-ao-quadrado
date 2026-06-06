@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Curso;
 use App\Http\Requests\CursoRequest;
+use Illuminate\Support\Facades\Gate;
 
 class CursoController extends Controller
 {
@@ -11,6 +12,7 @@ class CursoController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
+        Gate::authorize('viewAny', Curso::class);
         $data = Curso::with(['disciplina', 'aluno'])->orderBy('nome')->get();
         return view('curso.index', compact(['data']));
     }
@@ -18,8 +20,8 @@ class CursoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create() {
+        Gate::authorize('create', Curso::class);
         return view('curso.create');
     }
 
@@ -28,6 +30,7 @@ class CursoController extends Controller
      */
     public function store(CursoRequest $request)
     {
+        Gate::authorize('create', Curso::class);
         $validado = $request->validated();
         Curso::create($validado);
         return redirect()->route('curso.index');
@@ -39,6 +42,7 @@ class CursoController extends Controller
     public function show(string $id)
     {
         $curso = Curso::find($id);
+        Gate::authorize('view', $curso);
 
         if(isset($curso)) {
             return view('curso.show', compact(['curso']));
@@ -53,6 +57,7 @@ class CursoController extends Controller
     public function edit(string $id)
     {
         $curso = Curso::find($id);
+        Gate::authorize('update', $curso);
 
         if(isset($curso)) {
             return view('curso.edit', compact(['curso']));
@@ -67,6 +72,7 @@ class CursoController extends Controller
     public function update(CursoRequest $request, string $id)
     {
         $curso = Curso::find($id);
+        Gate::authorize('update', $curso);
 
         if(isset($curso)) {
             $curso->update($request->validated());
@@ -82,6 +88,7 @@ class CursoController extends Controller
     public function destroy(string $id)
     {
         $curso = Curso::find($id);
+        Gate::authorize('delete', $curso);
 
         if(isset($curso)) {
             $curso->delete();
