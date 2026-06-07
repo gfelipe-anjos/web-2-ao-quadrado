@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Aluno;
 use App\Models\Curso;
 use App\Http\Requests\AlunoRequest;
+use Illuminate\Support\Facades\Gate;
 
 class AlunoController extends Controller
 {
@@ -13,6 +14,7 @@ class AlunoController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
+        Gate::authorize('viewAny', Aluno::class);
         $data = Aluno::with(['curso', 'disciplina'])->orderBy('nome')->get();
         return view('aluno.index', compact('data'));
     }
@@ -22,6 +24,7 @@ class AlunoController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Aluno::class);
         $cursos = Curso::orderBy('nome')->get();
         return view('aluno.create', compact('cursos'));
     }
@@ -31,6 +34,7 @@ class AlunoController extends Controller
      */
     public function store(AlunoRequest $request)
     {
+        Gate::authorize('create', Aluno::class);
         $validado = $request->validated();
         Aluno::create($validado);
         return redirect()->route('aluno.index');
@@ -42,6 +46,8 @@ class AlunoController extends Controller
     public function show(string $id)
     {
         $aluno = Aluno::find($id);
+
+        Gate::authorize('view', $aluno);
 
         if(isset($aluno)) {
             return view('aluno.show', compact(['aluno']));
@@ -58,7 +64,8 @@ class AlunoController extends Controller
         $aluno = Aluno::find($id);
         $cursos = Curso::orderBy('nome')->get();
 
-    
+        Gate::authorize('update', $aluno);
+
         if(isset($aluno)) {
             return view('aluno.edit', compact('aluno', 'cursos'));
         }
@@ -72,6 +79,8 @@ class AlunoController extends Controller
     public function update(AlunoRequest $request, string $id)
     {
         $aluno = Aluno::find($id);
+
+        Gate::authorize('update', $aluno);
 
         if(isset($aluno)) {
             $validado = $request->validated();
@@ -88,6 +97,8 @@ class AlunoController extends Controller
     public function destroy(string $id)
     {
         $aluno = Aluno::find($id);
+
+        Gate::authorize('delete', $aluno);
 
         if(isset($aluno)) {
             $aluno->delete();

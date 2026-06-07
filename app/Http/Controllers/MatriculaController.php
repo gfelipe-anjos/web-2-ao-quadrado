@@ -7,6 +7,7 @@ use App\Models\Matricula;
 use App\Models\Aluno;
 use App\Models\Disciplina;
 use App\Http\Requests\MatriculaRequest;
+use Illuminate\Support\Facades\Gate;
 
 class MatriculaController extends Controller
 {
@@ -15,6 +16,7 @@ class MatriculaController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny', Matricula::class);
         $data = Matricula::with(['aluno', 'disciplina'])->orderBy('nome')->get();
         return view('matricula.index', compact('data'));
     }
@@ -24,6 +26,7 @@ class MatriculaController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Matricula::class);
         $alunos = Aluno::orderBy('nome')->get();
         $disciplinas = Disciplina::orderBy('nome')->get();
 
@@ -35,6 +38,7 @@ class MatriculaController extends Controller
      */
     public function store(MatriculaRequest $request)
     {
+        Gate::authorize('create', Matricula::class);
         Matricula::create($request->validated());
         return redirect()->route('matricula.index');
     }
@@ -44,6 +48,7 @@ class MatriculaController extends Controller
      */
     public function show(string $id)
     {
+        Gate::authorize('view', Matricula::class);
         $matricula = Matricula::with(['aluno.curso','disciplina' ])->findOrFail($id);
 
         return view('matricula.show',compact('matricula'));
@@ -54,6 +59,7 @@ class MatriculaController extends Controller
      */
     public function edit(string $id)
     {
+        Gate::authorize('update', Matricula::class);
         $alunos = Aluno::orderBy('nome')->get();
         $disciplinas = Disciplina::orderBy('nome')->get();
 
@@ -67,6 +73,7 @@ class MatriculaController extends Controller
      */
     public function update(MatriculaRequest $request, Matricula $matricula)
     {
+        Gate::authorize('update', $matricula);
         $matricula->update($request->validated());
 
         return redirect()->route('matricula.index');
@@ -77,7 +84,8 @@ class MatriculaController extends Controller
      */
     public function destroy(string $id)
     {
-       $matricula = Matricula::find($id);
+        Gate::authorize('delete', Matricula::class);
+        $matricula = Matricula::find($id);
 
         if(isset($matricula)) {
             $matricula->delete();
