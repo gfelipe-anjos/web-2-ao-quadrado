@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditablesTrait;
 
-class Matricula extends Model
+class Matricula extends Model implements Auditable
 {
+    use AuditablesTrait;
+
     protected $fillable = [
         'disciplina_id',
         'aluno_id',

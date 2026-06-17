@@ -17,7 +17,7 @@
             @foreach ($data as $item)
                 <tr>
                     <td>{{ $item->aluno->nome }}</td>
-                    <td class="d-none d-md-table-cell">{{ $item->disciplina->nome }} ano(s)</td>
+                    <td class="d-none d-md-table-cell">{{ $item->disciplina->nome }} </td>
                     <td>
                         @can('view', $item)
                             <a href="{{route('curso.show', $item->id)}}" class="btn btn-outline-info">
